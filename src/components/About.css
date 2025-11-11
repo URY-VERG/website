@@ -1,0 +1,8 @@
+.about-page {
+  padding: 40px;
+  background: #fff;
+  border-radius: 10px;
+  width: 80%;
+  margin: 30px auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}

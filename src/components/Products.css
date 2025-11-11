@@ -1,0 +1,47 @@
+.products-container {
+  width: 90%;
+  margin: auto;
+  font-family: Arial, sans-serif;
+}
+
+.tabs {
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  margin-right: 10px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #eee;
+  transition: 0.2s;
+}
+
+.tabs button:hover {
+  background-color: #ddd;
+}
+
+.tabs button.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.product-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  width: 200px;
+  border-radius: 8px;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.product-card:hover {
+  transform: scale(1.05);
+}

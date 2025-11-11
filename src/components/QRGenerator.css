@@ -1,0 +1,15 @@
+/* QRGenerator.css */
+.qr-gen {
+  width: 90%;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+}
+
+.qr-gen textarea {
+  width: 100%;
+  font-size: 14px;
+}
+
+.qr-gen div {
+  margin-top: 10px;
+}
