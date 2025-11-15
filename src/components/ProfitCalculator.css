@@ -1,0 +1,121 @@
+.profit-page {
+  padding: 28px;
+  max-width: 980px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #f8fff8 0%, #f1f8e9 100%);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(20, 60, 20, 0.05);
+}
+
+.profit-page h2 {
+  color: #2e7d32;
+  text-align: center;
+}
+
+.muted {
+  text-align: center;
+  color: #555;
+  margin-bottom: 18px;
+}
+
+.calc-form {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.row label {
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.row input, .row select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #dbeedb;
+  outline: none;
+}
+
+.row input:focus, .row select:focus {
+  border-color: #9fd08f;
+  box-shadow: 0 2px 6px rgba(46,125,50,0.08);
+}
+
+.toggle-row .inline {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.btn {
+  background: #e9f5ea;
+  color: #2e7d32;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid #cfe9cf;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btn.primary {
+  background: #2e7d32;
+  color: white;
+  box-shadow: 0 6px 16px rgba(46,125,50,0.12);
+}
+
+.btn:hover { opacity: 0.95; }
+
+.error {
+  color: #b00020;
+  padding: 8px;
+  background: #fff1f1;
+  border-radius: 8px;
+  border: 1px solid #f5c1c1;
+}
+
+/* Result card */
+.result-card {
+  margin-top: 18px;
+  padding: 16px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.result-grid div {
+  background: #fbfff9;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e6f4e6;
+}
+
+.result-grid strong { color: #2e7d32; }
+
+.green { color: #1b5e20; font-weight: 700; }
+.red { color: #c62828; font-weight: 700; }
+
+.advice {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f7fff7;
+}

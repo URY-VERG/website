@@ -1,9 +1,0 @@
-/* src/components/QRScanner.css */
-.qr-page { width: 90%; margin: 20px auto; font-family: Arial, sans-serif; }
-.scanner-area { display: flex; gap: 20px; align-items: flex-start; }
-.controls { display: flex; flex-direction: column; gap: 10px; }
-.upload-label input { display: block; margin-top: 6px; }
-.result-area { margin-top: 20px; }
-.scanned-card { border: 1px solid #ddd; padding: 12px; border-radius: 6px; background: #fafafa; }
-.error { color: red; }
-.hint { color: #666; }
