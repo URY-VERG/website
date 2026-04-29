@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import NodeCache from "node-cache";
+import path from "path";
 
 const PORT = Number(process.env.PORT || 5050);
 const cache = new NodeCache({ stdTTL: 60 * 10 }); // 10 min cache
@@ -167,6 +168,53 @@ app.get("/api/livestock/advisory", (req, res) => {
     ],
     fetchedAt: new Date().toISOString(),
   });
+});
+
+// --- SIMPLE PROXY FOR EXTERNAL FILES (PDFS/OTHER) -------------------------
+// Allows the client to preview or download files that block embedding or
+// set restrictive headers. This proxy applies basic checks to avoid
+// proxying internal hostnames. Response is streamed/backed as a buffer.
+app.get("/api/proxy", async (req, res) => {
+  const raw = String(req.query.url ?? "");
+  if (!raw) return res.status(400).json({ error: "missing url query param" });
+
+  let u;
+  try {
+    u = new URL(raw);
+  } catch (e) {
+    return res.status(400).json({ error: "invalid url" });
+  }
+
+  // only allow http(s)
+  if (!["http:", "https:"].includes(u.protocol)) {
+    return res.status(400).json({ error: "unsupported protocol" });
+  }
+
+  // disallow localhost and private addresses to avoid open-proxy risk
+  const forbiddenHosts = new Set(["localhost", "127.0.0.1", "::1"]);
+  if (forbiddenHosts.has(u.hostname)) {
+    return res.status(400).json({ error: "hostname not allowed" });
+  }
+
+  try {
+    const r = await fetch(u.toString());
+    if (!r.ok) return res.status(502).json({ error: "failed to fetch resource" });
+
+    const contentType = r.headers.get("content-type") || "application/octet-stream";
+    res.setHeader("content-type", contentType);
+
+    // if download=1, force download filename
+    if (String(req.query.download ?? "") === "1") {
+      const filename = path.basename(u.pathname) || "file";
+      res.setHeader("content-disposition", `attachment; filename="${filename}"`);
+    }
+
+    // stream the response body
+    const arrayBuffer = await r.arrayBuffer();
+    res.send(Buffer.from(arrayBuffer));
+  } catch (e) {
+    res.status(502).json({ error: e?.message || "fetch failed" });
+  }
 });
 
 app.listen(PORT, () => {

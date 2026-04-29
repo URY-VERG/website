@@ -84,18 +84,11 @@ function Learning() {
 
       {active?.youtubeId && (
         <div style={{ marginBottom: 18 }}>
-          <div style={{ borderRadius: 12, overflow: "hidden", background: "#0b1220" }}>
-            <iframe
-              title={active.title}
-              width="100%"
-              height="360"
-              src={`https://www.youtube-nocookie.com/embed/${active.youtubeId}`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              style={{ border: 0, display: "block" }}
-            />
+          <div className="video-preview">
+            {/* Show a clickable thumbnail to avoid iframe autoplay/embedding issues */}
+            <VideoPlayer youtubeId={active.youtubeId} title={active.title} />
           </div>
-          <div style={{ marginTop: 10, display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <div style={{ marginTop: 10, display: "flex", gap: 10, flexWrap: "wrap", justifyContent: 'center' }}>
             <a
               href={active.videoUrl}
               target="_blank"
@@ -105,15 +98,24 @@ function Learning() {
               Open on YouTube
             </a>
             {(active.pdfs ?? []).map((p) => (
-              <a
-                key={p.url}
-                href={p.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-outline"
-              >
-                {p.label}
-              </a>
+              <div key={p.url} style={{ display: 'flex', gap: 8 }}>
+                <a
+                  href={`/api/proxy?url=${encodeURIComponent(p.url)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-outline"
+                >
+                  Open
+                </a>
+                <a
+                  href={`/api/proxy?url=${encodeURIComponent(p.url)}&download=1`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn"
+                >
+                  Download
+                </a>
+              </div>
             ))}
           </div>
         </div>
@@ -151,3 +153,33 @@ function Learning() {
 }
 
 export default Learning;
+
+function VideoPlayer({ youtubeId, title }) {
+  const [playing, setPlaying] = useState(false);
+  const thumb = `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
+
+  return (
+    <div className="video-player" style={{ position: 'relative' }}>
+      {!playing ? (
+        <button
+          className="video-thumb"
+          onClick={() => setPlaying(true)}
+          style={{ border: 0, padding: 0, background: 'none' }}
+        >
+          <img src={thumb} alt={title} style={{ width: '100%', display: 'block' }} />
+          <div className="play-overlay">▶</div>
+        </button>
+      ) : (
+        <iframe
+          title={title}
+          width="100%"
+          height="360"
+          src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1`}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          style={{ border: 0, display: 'block' }}
+        />
+      )}
+    </div>
+  );
+}
