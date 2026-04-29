@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
@@ -11,15 +11,59 @@ import Shopping from "./components/Shopping";
 import ProfitCalculator from "./components/ProfitCalculator";
 import About from "./components/About";
 import Finance from "./components/Finance";
-import Developer from "./components/Developer";
+import LatestUpdates from "./components/LatestUpdates";
 
 import Checkout from "./pages/Checkout";
 
 import "./App.css";
 
+const CART_STORAGE_KEY = "agrilink:cart:v1";
+
+function readCartFromStorage() {
+  try {
+    const raw = localStorage.getItem(CART_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .filter((x) => x && typeof x === "object")
+      .map((x) => ({
+        name: String(x.name ?? ""),
+        price: Number(x.price ?? 0),
+        qty: Number(x.qty ?? 0),
+      }))
+      .filter(
+        (x) =>
+          x.name &&
+          Number.isFinite(x.price) &&
+          Number.isFinite(x.qty) &&
+          x.qty > 0
+      );
+  } catch {
+    return [];
+  }
+}
+
 function App() {
   // 🛒 CART STATE
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => readCartFromStorage());
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    } catch {
+      // ignore storage failures (private mode / quota)
+    }
+  }, [cart]);
+
+  const cartCount = useMemo(
+    () =>
+      cart.reduce(
+        (sum, item) => sum + (Number.isFinite(item.qty) ? item.qty : 0),
+        0
+      ),
+    [cart]
+  );
 
   // ➕ ADD TO CART FUNCTION (with quantity)
   const addToCart = (item) => {
@@ -42,19 +86,21 @@ function App() {
       prev
         .map((item) =>
           item.name === name
-            ? { ...item, qty: Math.max(1, item.qty + change) }
+            ? { ...item, qty: Math.max(0, item.qty + change) }
             : item
         )
         .filter((item) => item.qty > 0)
     );
   };
 
+  const clearCart = () => setCart([]);
+
   return (
     <Router>
       <div className="App">
 
         {/* NAVBAR ला CART पास */}
-        <Navbar cart={cart} />
+        <Navbar cart={cart} cartCount={cartCount} />
 
         <Routes>
           {/* NORMAL ROUTES */}
@@ -66,7 +112,7 @@ function App() {
           <Route path="/market" element={<Market />} />
           <Route path="/products" element={<Products />} />
           <Route path="/about" element={<About />} />
-          <Route path="/developer" element={<Developer />} />
+          <Route path="/updates" element={<LatestUpdates />} />
 
           {/* SHOPPING + CHECKOUT */}
           <Route path="/shopping" element={<Shopping addToCart={addToCart} />} />
@@ -77,6 +123,7 @@ function App() {
               <Checkout
                 cart={cart}
                 updateQuantity={updateQuantity}
+                clearCart={clearCart}
               />
             }
           />

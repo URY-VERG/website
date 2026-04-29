@@ -1,53 +1,149 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import "./Learning.css";
 
-const lessons = [
+const resources = [
   {
-    id: 1,
-    title: "🌾 Organic Farming",
-    desc: "Natural fertilizers, composting, and pest control methods.",
-    link: "https://www.youtube.com/watch?v=5XExample1" // replace with real YouTube link
+    id: "organic",
+    title: "🌾 Organic Farming Basics",
+    desc: "Composting, natural inputs, and safe pest control.",
+    // Note: YouTube IDs can be swapped anytime without code changes.
+    youtubeId: "XttMPRL8U5I",
+    videoUrl: "https://www.youtube.com/watch?v=XttMPRL8U5I",
+    pdfs: [
+      {
+        label: "PM-KISAN Operational Guidelines (PDF)",
+        url: "https://krishi.maharashtra.gov.in/Site/Upload/Pdf/PM%20KISAN%20OPERATIONAL%20GUIDELINES.pdf",
+      },
+      {
+        label: "PM-KISAN FAQs (PIB PDF)",
+        url: "https://static.pib.gov.in/WriteReadData/specificdocs/documents/2021/nov/doc2021112361.pdf",
+      },
+    ],
   },
   {
-    id: 2,
-    title: "💧 Smart Irrigation",
-    desc: "Drip irrigation, scheduling, and water-saving tips.",
-    link: "https://www.youtube.com/watch?v=5XExample2"
+    id: "irrigation",
+    title: "💧 Smart Irrigation & Water Saving",
+    desc: "More crop per drop, drip basics, and water planning.",
+    youtubeId: "dYkYyNQF8cE",
+    videoUrl: "https://www.youtube.com/watch?v=dYkYyNQF8cE",
+    pdfs: [
+      {
+        label: "PMKSY Manual for District Functionaries (PDF)",
+        url: "https://darpg.gov.in/sites/default/files/Pradhan%20Mantri%20Krishi%20Sichai%20Yojana.pdf",
+      },
+      {
+        label: "PMKSY Guidelines (website)",
+        url: "https://www.pmksy.gov.in/Guidelines.aspx",
+      },
+    ],
   },
   {
-    id: 3,
-    title: "🚜 Modern Equipment",
-    desc: "Use of tractors, planters, and low-cost mechanization.",
-    link: "https://www.youtube.com/watch?v=5XExample3"
+    id: "credit",
+    title: "💳 Loans & Kisan Credit Card (KCC)",
+    desc: "Understand credit, documents, and application basics.",
+    youtubeId: "3Y9v0e2t6kU",
+    videoUrl: "https://www.youtube.com/watch?v=3Y9v0e2t6kU",
+    pdfs: [
+      {
+        label: "KCC: Agri Credit application form (SBI PDF)",
+        url: "https://sbi.co.in/documents/14463/22577/application+form.pdf/24a2171c-9ab5-a4de-08ef-7a5891525cfe",
+      },
+    ],
   },
   {
-    id: 4,
-    title: "📱 Mobile Apps for Farmers",
-    desc: "Useful mobile apps for weather, market prices and advisories.",
-    link: "https://www.youtube.com/watch?v=5XExample4"
-  }
+    id: "tools",
+    title: "📱 Useful Apps for Farmers",
+    desc: "Gov portals, scheme discovery, and farmer services.",
+    youtubeId: "V1Pl8CzNzCw",
+    videoUrl: "https://www.youtube.com/watch?v=V1Pl8CzNzCw",
+    pdfs: [
+      {
+        label: "PM-KISAN portal (website)",
+        url: "https://pmkisan.gov.in/",
+      },
+      {
+        label: "myScheme: scheme discovery (website)",
+        url: "https://www.myscheme.gov.in/",
+      },
+    ],
+  },
 ];
 
 function Learning() {
+  const [activeId, setActiveId] = useState(resources[0]?.id ?? "");
+
+  const active = useMemo(
+    () => resources.find((r) => r.id === activeId) ?? resources[0],
+    [activeId]
+  );
+
   return (
     <div className="learning-page">
       <h2>📘 Learning Center</h2>
       <p className="lead">Short videos and articles — Marathi & English — to help farmers learn practical techniques.</p>
 
+      {active?.youtubeId && (
+        <div style={{ marginBottom: 18 }}>
+          <div style={{ borderRadius: 12, overflow: "hidden", background: "#0b1220" }}>
+            <iframe
+              title={active.title}
+              width="100%"
+              height="360"
+              src={`https://www.youtube-nocookie.com/embed/${active.youtubeId}`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              style={{ border: 0, display: "block" }}
+            />
+          </div>
+          <div style={{ marginTop: 10, display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <a
+              href={active.videoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn"
+            >
+              Open on YouTube
+            </a>
+            {(active.pdfs ?? []).map((p) => (
+              <a
+                key={p.url}
+                href={p.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline"
+              >
+                {p.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="learning-grid">
-        {lessons.map(item => (
-          <div className="learn-card" key={item.id}>
+        {resources.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            className="learn-card"
+            onClick={() => setActiveId(item.id)}
+            style={{
+              textAlign: "left",
+              cursor: "pointer",
+              border:
+                item.id === activeId ? "2px solid #22c55e" : "1px solid rgba(0,0,0,0.08)",
+            }}
+          >
             <h3>{item.title}</h3>
             <p>{item.desc}</p>
             <div className="card-actions">
-              <a href={item.link} target="_blank" rel="noopener noreferrer" className="btn">
-                Watch Video
-              </a>
-              <a href={`/resources/${item.title.replace(/\s+/g,'-').toLowerCase()}.pdf`} target="_blank" rel="noopener noreferrer" className="btn-outline">
-                Read PDF
-              </a>
+              <span className="btn" style={{ pointerEvents: "none" }}>
+                Watch
+              </span>
+              <span className="btn-outline" style={{ pointerEvents: "none" }}>
+                PDFs
+              </span>
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </div>
