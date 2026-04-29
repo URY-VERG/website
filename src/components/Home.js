@@ -54,6 +54,11 @@ function Home() {
               <div className="mt-2 font-bold">Profit</div>
               <div className="text-sm text-slate-600">ROI calculator</div>
             </Link>
+            <Link to="/livestock" className="rounded-2xl border bg-white p-4 hover:bg-slate-50">
+              <div className="text-xl">🐄</div>
+              <div className="mt-2 font-bold">Livestock</div>
+              <div className="text-sm text-slate-600">Monthly tips</div>
+            </Link>
           </div>
         </div>
 

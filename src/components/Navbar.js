@@ -28,6 +28,7 @@ function Navbar({ cart = [], cartCount }) {
           <NavLink to="/learning" className={linkClassName}>Learning</NavLink>
           <NavLink to="/weather" className={linkClassName}>Weather</NavLink>
           <NavLink to="/market" className={linkClassName}>Market</NavLink>
+          <NavLink to="/livestock" className={linkClassName}>Livestock</NavLink>
           <NavLink to="/products" className={linkClassName}>Products</NavLink>
           <NavLink to="/finance" className={linkClassName}>Schemes</NavLink>
           <NavLink to="/updates" className={linkClassName}>Updates</NavLink>
@@ -64,6 +65,7 @@ function Navbar({ cart = [], cartCount }) {
             <NavLink to="/learning" className={linkClassName} onClick={() => setOpen(false)}>Learning</NavLink>
             <NavLink to="/weather" className={linkClassName} onClick={() => setOpen(false)}>Weather</NavLink>
             <NavLink to="/market" className={linkClassName} onClick={() => setOpen(false)}>Market</NavLink>
+            <NavLink to="/livestock" className={linkClassName} onClick={() => setOpen(false)}>Livestock</NavLink>
             <NavLink to="/products" className={linkClassName} onClick={() => setOpen(false)}>Products</NavLink>
             <NavLink to="/finance" className={linkClassName} onClick={() => setOpen(false)}>Schemes</NavLink>
             <NavLink to="/updates" className={linkClassName} onClick={() => setOpen(false)}>Updates</NavLink>

@@ -12,6 +12,7 @@ import ProfitCalculator from "./components/ProfitCalculator";
 import About from "./components/About";
 import Finance from "./components/Finance";
 import LatestUpdates from "./components/LatestUpdates";
+import Livestock from "./components/Livestock";
 
 import Checkout from "./pages/Checkout";
 
@@ -113,6 +114,7 @@ function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/about" element={<About />} />
           <Route path="/updates" element={<LatestUpdates />} />
+          <Route path="/livestock" element={<Livestock />} />
 
           {/* SHOPPING + CHECKOUT */}
           <Route path="/shopping" element={<Shopping addToCart={addToCart} />} />
